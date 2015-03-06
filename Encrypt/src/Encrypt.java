@@ -1,11 +1,12 @@
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.security.SecureRandom;
 public class Encrypt {
 	public static void main(String[] args) {
-		String s = "aφや館";
-		s = toBinary(s);
+		String s = "aφや館л�";
+		s = addTrash(s, "{5Z");
 		System.out.println(s);
-		s = fromBinary(s);
+		s = cutTrash(s, "{5Z");
 		System.out.println(s);
 	}
 	public String in(String s, String key) {
@@ -15,6 +16,10 @@ public class Encrypt {
 	public String out(String code, String key) {
 		String s;
 		return s;
+	}
+	private static String genKey() {
+		String key = randomChar() + randomChar() + randomChar();
+		return key;
 	}
 	private static String toBinary(String s) {
 		String bin = "";
@@ -34,22 +39,45 @@ public class Encrypt {
 			byte v = (byte) a;
 			l.add(new Byte(v));
 		}
+		byte[] b = byteArray(l);
+		return new String(b, StandardCharsets.UTF_8);
+	}
+	private static byte[] byteArray(ArrayList<Byte> l) {
 		byte[] b = new byte[l.size()];
 		for(int i = 0; i < l.size(); i++) {
 			b[i] = l.get(i).byteValue();
 		}
-		return new String(b, StandardCharsets.UTF_8);
+		return b;
 	}
-	private String addTrash(String s, String key) {
-		
+	private static String addTrash(String s, String key) {
+		int g = key.charAt(1) % 16;
+		String buried = "";
+		for(int i = 0; i < s.length(); i++) {
+			buried += s.substring(i, i + 1);
+			for(int t = 0; t < g; t++) {
+				buried += randomChar();
+			}
+		}
+		return buried;
 	}
-	private String cutTrash(String s, String key) {
-		
+	private static String cutTrash(String s, String key) {
+		int g = key.charAt(1) % 16;
+		String cleaned = "";
+		for(int i = 0; i < s.length(); i += g + 1) {
+			cleaned += s.substring(i, i + 1);
+		}
+		return cleaned;
 	}
 	private String scat(String s, String key) {
 		
 	}
 	private String sort(String s, String key) {
 		
+	}
+	private static String randomChar() {
+		String s = "";
+		SecureRandom r = new SecureRandom();
+		s += (char) r.nextInt(Character.MAX_CODE_POINT);
+		return s;
 	}
 }
