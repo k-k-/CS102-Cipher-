@@ -52,7 +52,7 @@ public class Encrypt {
 		return b;
 	}
 	private static String addTrash(String s, String key) {
-		int g = Math.abs((33 - key.charAt(0) * key.charAt(1) + key.charAt(2)) % 10);
+		int g = Math.abs((33 - key.charAt(0) * key.charAt(1) + key.charAt(2)) % 2);
 		String buried = "";
 		for(int i = 0; i < s.length(); i++) {
 			buried += s.substring(i, i + 1);
@@ -60,20 +60,26 @@ public class Encrypt {
 				buried += randomChar();
 			}
 		}
+		for(int i = Math.abs(key.charAt(2) + key.charAt(1) / key.charAt(0) - key.charAt(1)) % 100; i < 0; i--) {
+			buried += randomChar();
+		}
 		return buried;
 	}
 	private static String cutTrash(String s, String key) {
-		int g = Math.abs((33 - key.charAt(0) * key.charAt(1) + key.charAt(2)) % 10);
+		int g = Math.abs((33 - key.charAt(0) * key.charAt(1) + key.charAt(2)) % 2);
 		String cleaned = "";
 		for(int i = 0; i < s.length(); i += g + 1) {
 			cleaned += s.substring(i, i + 1);
+		}
+		for(int i = Math.abs(key.charAt(2) + key.charAt(1) / key.charAt(0) - key.charAt(1)) % 100; i < 0; i--) {
+			cleaned = cleaned.substring(0, cleaned.length() - 1);
 		}
 		return cleaned;
 	}
 	private static String scat(String s, String key) {
 		int m = Math.abs((int) (Math.E * (key.charAt(0) / Math.abs(key.charAt(1)) + key.charAt(2) + 1)) % 20 + 2);
 		int a = Math.abs((key.charAt(0) % key.charAt(2) - key.charAt(2) + 4) % s.length()) + 1;
-		int t = Math.abs((key.charAt(0) * 24 % key.charAt(2) * key.charAt(1)) % 30 + 10) * s.length();
+		int t = Math.abs((key.charAt(0) * 24 % key.charAt(2) * key.charAt(1)) % 10 + 10) * s.length();
 		if(s.length() % m == 0) m++;
 		if(a == m) a--;
 		for(int i = 0; i < t; i ++) {
@@ -85,7 +91,7 @@ public class Encrypt {
 	private static String sort(String s, String key) {
 		int m = Math.abs((int) (Math.E * (key.charAt(0) / Math.abs(key.charAt(1)) + key.charAt(2) + 1)) % 20 + 2);
 		int a = Math.abs((key.charAt(0) % key.charAt(2) - key.charAt(2) + 4) % s.length()) + 1;
-		int t = Math.abs((key.charAt(0) * 24 % key.charAt(2) * key.charAt(1)) % 30 + 10) * s.length();
+		int t = Math.abs((key.charAt(0) * 24 % key.charAt(2) * key.charAt(1)) % 10 + 10) * s.length();
 		if(s.length() % m == 0) m++;
 		if(a == m) a--;
 		for(int i = t - 1; i >= 0; i--) {

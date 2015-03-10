@@ -108,7 +108,7 @@ public class EncryptUI extends JFrame implements ActionListener{
              }
              if (e.getActionCommand().equals("Decrypt")){
                    try {
-                     String s = Encrypt.out(outputTA.getText());
+                     String s = Encrypt.out(inputTA.getText().toString());
                      outputTA.setText(s);
                    } catch (Exception e1) {
                      e1.printStackTrace();
