@@ -52,7 +52,7 @@ public class Encrypt {
 		return b;
 	}
 	private static String addTrash(String s, String key) {
-		int g = Math.abs((33 - key.charAt(0) * key.charAt(1) + key.charAt(2)) % 16);
+		int g = Math.abs((33 - key.charAt(0) * key.charAt(1) + key.charAt(2)) % 10);
 		String buried = "";
 		for(int i = 0; i < s.length(); i++) {
 			buried += s.substring(i, i + 1);
@@ -63,7 +63,7 @@ public class Encrypt {
 		return buried;
 	}
 	private static String cutTrash(String s, String key) {
-		int g = Math.abs((33 - key.charAt(0) * key.charAt(1) + key.charAt(2)) % 16);
+		int g = Math.abs((33 - key.charAt(0) * key.charAt(1) + key.charAt(2)) % 10);
 		String cleaned = "";
 		for(int i = 0; i < s.length(); i += g + 1) {
 			cleaned += s.substring(i, i + 1);
