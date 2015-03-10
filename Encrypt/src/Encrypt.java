@@ -2,21 +2,18 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.security.SecureRandom;
 public class Encrypt {
-	public static void main(String[] args) {
-		String s = "aφや館л�";
-		System.out.println(s);
-		s = in(s, "やsл");
-		System.out.println(s);
-		s = out(s, "やsл");
-		System.out.println(s);
-	}
-	public static String in(String s, String key) {
+	public static String in(String s) {
+		String key = genKey();
 		s = addTrash(s, key);
 		s = toBinary(s);
 		s = scat(s, key);
+		s = toBinary(key) + s;
 		return s;
 	}
-	public static String out(String s, String key) {
+	public static String out(String s) {
+		String key = fromBinary(s).substring(0, 3);
+		int keyb = toBinary(key).length();
+		s = s.substring(keyb);
 		s = sort(s, key);
 		s = fromBinary(s);
 		s = cutTrash(s, key);
