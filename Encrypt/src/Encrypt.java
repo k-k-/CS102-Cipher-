@@ -79,7 +79,7 @@ public class Encrypt {
 		int t = Math.abs((key.charAt(0) * 24 % key.charAt(2) * key.charAt(1)) % 30 + 10) * s.length();
 		if(s.length() % m == 0) m++;
 		if(a == m) a--;
-		for(int i = 0; i < t; i ++) {
+		for(int i = 0; i < t * s.length(); i ++) {
 			int j = i % s.length();
 			if(i % m != 0) s = swap(s, j, (j + a) % s.length());
 		}
@@ -91,7 +91,7 @@ public class Encrypt {
 		int t = Math.abs((key.charAt(0) * 24 % key.charAt(2) * key.charAt(1)) % 30 + 10) * s.length();
 		if(s.length() % m == 0) m++;
 		if(a == m) a--;
-		for(int i = t - 1; i >= 0; i--) {
+		for(int i = t * s.length() - 1; i >= 0; i--) {
 			int j = i % s.length();
 			if(i % m != 0) s = swap(s, j, (j + a) % s.length());
 		}		
