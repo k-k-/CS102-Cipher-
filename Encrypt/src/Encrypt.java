@@ -4,17 +4,22 @@ import java.security.SecureRandom;
 public class Encrypt {
 	public static void main(String[] args) {
 		String s = "aφや館л�";
-		s = addTrash(s, "{5Z");
 		System.out.println(s);
-		s = cutTrash(s, "{5Z");
+		s = in(s, "やsл");
+		System.out.println(s);
+		s = out(s, "やsл");
 		System.out.println(s);
 	}
-	public String in(String s, String key) {
-		String code;
-		return code;
+	public static String in(String s, String key) {
+		s = addTrash(s, key);
+		s = toBinary(s);
+		s = scat(s, key);
+		return s;
 	}
-	public String out(String code, String key) {
-		String s;
+	public static String out(String s, String key) {
+		s = sort(s, key);
+		s = fromBinary(s);
+		s = cutTrash(s, key);
 		return s;
 	}
 	private static String genKey() {
@@ -50,7 +55,7 @@ public class Encrypt {
 		return b;
 	}
 	private static String addTrash(String s, String key) {
-		int g = key.charAt(1) % 16;
+		int g = Math.abs((33 - key.charAt(0) * key.charAt(1) + key.charAt(2)) % 16);
 		String buried = "";
 		for(int i = 0; i < s.length(); i++) {
 			buried += s.substring(i, i + 1);
@@ -61,18 +66,47 @@ public class Encrypt {
 		return buried;
 	}
 	private static String cutTrash(String s, String key) {
-		int g = key.charAt(1) % 16;
+		int g = Math.abs((33 - key.charAt(0) * key.charAt(1) + key.charAt(2)) % 16);
 		String cleaned = "";
 		for(int i = 0; i < s.length(); i += g + 1) {
 			cleaned += s.substring(i, i + 1);
 		}
 		return cleaned;
 	}
-	private String scat(String s, String key) {
-		
+	private static String scat(String s, String key) {
+		int m = Math.abs((int) (Math.E * (key.charAt(0) / Math.abs(key.charAt(1)) + key.charAt(2) + 1)) % 20 + 2);
+		int a = Math.abs((key.charAt(0) % key.charAt(2) - key.charAt(2) + 4) % s.length()) + 1;
+		int t = Math.abs((key.charAt(0) * 24 % key.charAt(2) * key.charAt(1)) % 30 + 10) * s.length();
+		if(s.length() % m == 0) m++;
+		if(a == m) a--;
+		for(int i = 0; i < t * s.length(); i ++) {
+			int j = i % s.length();
+			if(i % m != 0) s = swap(s, j, (j + a) % s.length());
+		}
+		return s;
 	}
-	private String sort(String s, String key) {
-		
+	private static String sort(String s, String key) {
+		int m = Math.abs((int) (Math.E * (key.charAt(0) / Math.abs(key.charAt(1)) + key.charAt(2) + 1)) % 20 + 2);
+		int a = Math.abs((key.charAt(0) % key.charAt(2) - key.charAt(2) + 4) % s.length()) + 1;
+		int t = Math.abs((key.charAt(0) * 24 % key.charAt(2) * key.charAt(1)) % 30 + 10) * s.length();
+		if(s.length() % m == 0) m++;
+		if(a == m) a--;
+		for(int i = t * s.length() - 1; i >= 0; i--) {
+			int j = i % s.length();
+			if(i % m != 0) s = swap(s, j, (j + a) % s.length());
+		}		
+		return s;
+	}
+	private static String swap(String s, int x, int y) {
+		String r = "";
+		int g = Math.max(x, y);
+		int l = Math.min(x, y);
+		for(int i = 0; i < s.length(); i++) {
+			if(i == g) r += s.substring(l, l + 1);
+			else if(i == l) r += s.substring(g, g + 1);
+			else r += s.substring(i, i + 1);
+		}
+		return r;
 	}
 	private static String randomChar() {
 		String s = "";
