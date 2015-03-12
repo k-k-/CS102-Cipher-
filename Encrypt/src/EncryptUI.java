@@ -28,7 +28,7 @@ import javax.swing.border.EmptyBorder;
 
 
 public class EncryptUI extends JFrame implements ActionListener{
-	public int connkey = 1;
+	public int colno = 1;
 	private JPanel contentPane;
 	private JTextField shiftFactor;
 	private JTextArea inputTA;
@@ -105,25 +105,18 @@ public class EncryptUI extends JFrame implements ActionListener{
 
 	    Connection con;
 		try {
-			String uname = "a7793893_User";
-			String pass = "Passcode32";
-			String url = "jdbc:mysql://mysql7.000webhost.com/a7793893_chat";
-			Class.forName ("com.mysql.jdbc.Driver").newInstance ();
+			String uname = "User2";
+			String pass = "Passcode347";
+			String url = "jdbc:sqlserver://localhost\\SQLEXPRESS;databaseName=Chat";
+			Class.forName ("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 			System.out.println("1");
 			con = DriverManager.getConnection(url,uname,pass);
 			System.out.println("2");
 		    Statement stmt = con.createStatement();
-		    stmt.executeUpdate("INSERT INTO a7793893_chat VALUES('1', '0011')");
-		    stmt.executeUpdate("INSERT INTO a7793893_chat VALUES('2', '0011')");
-		    con.commit();
-		    con.setAutoCommit(true);
+		    stmt.execute("INSERT INTO dbo.MSG VALUES ('" + tosend + "')");
+		    colno++;
+		 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
@@ -136,26 +129,28 @@ public class EncryptUI extends JFrame implements ActionListener{
 	public String connectToAndReadDatabase() throws SQLException{
 		Connection con;
 		try{
-			String uname = "sql370401";
-			String pass = "pL4*jN1%";
-			String url = "jdbc:mysql://sql3.freesqldatabase.com:3306&user=sql370401&pass=pL4*jN1%";
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
+			String uname = "User2";
+			String pass = "Passcode347";
+			String url = "jdbc:sqlserver://localhost\\SQLEXPRESS;databaseName=Chat";
+			Class.forName ("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 			System.out.println("1");
-			con = DriverManager.getConnection(url);
+			con = DriverManager.getConnection(url,uname,pass);
 			System.out.println("2");
 		    Statement stmt = con.createStatement();
-		    //remember int connkey
-		    //stmt.executeQuery("FROM ");
+		    ResultSet rs = stmt.executeQuery("SELECT * FROM dbo.MSG");
+		    while (rs.next()){
+		    	String s = rs.getString(colno);
+
+		    	return Encrypt.out(s);
+		    }
+		    
+
+
 		}
 		catch (SQLException e){
 			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
+		}
+		 catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
