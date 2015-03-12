@@ -8,9 +8,11 @@ public class Encrypt {
 		s = toBinary(s);
 		s = scat(s, key);
 		s = toBinary(key) + s;
+		s = toHex(s);
 		return s;
 	}
 	public static String out(String s) {
+		s = fromHex(s);
 		String key = fromBinary(s).substring(0, 3);
 		int keyb = toBinary(key).length();
 		s = s.substring(keyb);
@@ -22,6 +24,21 @@ public class Encrypt {
 	private static String genKey() {
 		String key = randomChar() + randomChar() + randomChar();
 		return key;
+	}
+	private static String toHex(String s) {
+		String r = "";
+		for(int i = 0; i < s.length(); i += 4) {
+			r += Integer.toHexString(Integer.parseInt(s.substring(i, i + 4), 2));
+		}
+		return r.toUpperCase();
+	}
+	private static String fromHex(String s) {
+		s = s.toLowerCase();
+		String r = "";
+		for(int i = 0; i < s.length(); i++) {
+			r += String.format("%4s", Integer.toBinaryString(Integer.parseInt(s.substring(i, i + 1), 16))).replace(' ', '0');
+		}
+		return r;
 	}
 	private static String toBinary(String s) {
 		String bin = "";
