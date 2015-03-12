@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.sql.Statement;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -8,6 +9,11 @@ import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.concurrent.Future;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -22,7 +28,7 @@ import javax.swing.border.EmptyBorder;
 
 
 public class EncryptUI extends JFrame implements ActionListener{
-
+	public int connkey = 1;
 	private JPanel contentPane;
 	private JTextField shiftFactor;
 	private JTextArea inputTA;
@@ -81,8 +87,8 @@ public class EncryptUI extends JFrame implements ActionListener{
           JPanel box1 = new JPanel();
           box1.setBackground(Color.LIGHT_GRAY);
           box1.setLayout(new FlowLayout());
-          JButton decryptButton = new JButton("Decrypt");
-          JButton encryptButton = new JButton("Encrypt");
+          JButton decryptButton = new JButton("Pull and Decrypt");
+          JButton encryptButton = new JButton("Encrypt and Send");
           decryptButton.addActionListener( this);
           encryptButton.addActionListener(this);
           box1.add(decryptButton);
@@ -95,20 +101,83 @@ public class EncryptUI extends JFrame implements ActionListener{
           pack();
 	}
 	
+	public void connectToAndWriteDatabase(String tosend) throws SQLException {
+
+	    Connection con;
+		try {
+			String uname = "a7793893_User";
+			String pass = "Passcode32";
+			String url = "jdbc:mysql://mysql7.000webhost.com/a7793893_chat";
+			Class.forName ("com.mysql.jdbc.Driver").newInstance ();
+			System.out.println("1");
+			con = DriverManager.getConnection(url,uname,pass);
+			System.out.println("2");
+		    Statement stmt = con.createStatement();
+		    stmt.executeUpdate("INSERT INTO a7793893_chat VALUES('1', '0011')");
+		    stmt.executeUpdate("INSERT INTO a7793893_chat VALUES('2', '0011')");
+		    con.commit();
+		    con.setAutoCommit(true);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public String connectToAndReadDatabase() throws SQLException{
+		Connection con;
+		try{
+			String uname = "sql370401";
+			String pass = "pL4*jN1%";
+			String url = "jdbc:mysql://sql3.freesqldatabase.com:3306&user=sql370401&pass=pL4*jN1%";
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
+			System.out.println("1");
+			con = DriverManager.getConnection(url);
+			System.out.println("2");
+		    Statement stmt = con.createStatement();
+		    //remember int connkey
+		    //stmt.executeQuery("FROM ");
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		return "";
+	}
+	
 	 @Override
      public void actionPerformed(ActionEvent e) {
-             if(e.getActionCommand().equals("Encrypt")){
+             if(e.getActionCommand().equals("Encrypt and Send")){
                      try{
-                            String s = Encrypt.in(inputTA.getText().toString());
-                            System.out.println(s);
-                            outputTA.setText(s);
+                    	 String s = Encrypt.in(inputTA.getText().toString());
+                    	 connectToAndWriteDatabase(s);
                      }catch(Exception e1){
                     	 System.out.println(e1);
                      }
              }
-             if (e.getActionCommand().equals("Decrypt")){
+             if (e.getActionCommand().equals("Pull and Decrypt")){
                    try {
-                     String s = Encrypt.out(inputTA.getText().toString());
+                     String s = connectToAndReadDatabase();
                      outputTA.setText(s);
                    } catch (Exception e1) {
                      e1.printStackTrace();
