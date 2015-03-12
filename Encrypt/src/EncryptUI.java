@@ -14,7 +14,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.concurrent.Future;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -88,7 +87,7 @@ public class EncryptUI extends JFrame implements ActionListener{
           JPanel box1 = new JPanel();
           box1.setBackground(Color.LIGHT_GRAY);
           box1.setLayout(new FlowLayout());
-          JButton decryptButton = new JButton("Pull and Decrypt");
+          JButton decryptButton = new JButton("Pull Message and Decrypt");
           JButton encryptButton = new JButton("Encrypt and Send");
           decryptButton.addActionListener( this);
           encryptButton.addActionListener(this);
@@ -170,7 +169,7 @@ public class EncryptUI extends JFrame implements ActionListener{
                     	 System.out.println(e1);
                      }
              }
-             if (e.getActionCommand().equals("Pull and Decrypt")){
+             if (e.getActionCommand().equals("Pull Message and Decrypt")){
                    try {
                      String s = connectToAndReadDatabase();
                      outputTA.setText(Encrypt.out(s));
